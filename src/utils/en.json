@@ -1,0 +1,28 @@
+{
+  "home":{
+    "home": "home",
+    "gonggao": "announcement",
+    "about": "about-Us",
+    "myUNMS": "my-UNMS",
+    "onSaleUNMS": "on-sale-UNMS",
+    "Directpushlist": "Direct push list",
+    "myInvitation": "my invitation",
+    "OneclickCoin":"OneclickCoin",
+    "Link":"unconnected wallet",
+    "linkyes":"connected wallet",
+    "Tools":"Tools",
+    "Swap":"Swap",
+    "DAO":"DAO",
+    "chinese":"chinese",
+    "english":"english",
+    "yue":"Balance",
+    "id":"ID Card",
+    "invite":"your Invite",
+    "member":"member",
+    "copy":"copy",
+    "Dailyoutput":"Daily output",
+    "production":"100 days of production",
+    "purchasenow":"purchase now",
+    "InvitationLink":"Invitation link"
+  }
+}

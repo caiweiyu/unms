@@ -1,0 +1,28 @@
+{
+  "home":{
+    "home": "首页",
+    "gonggao": "公告",
+    "about": "关于我们",
+    "myUNMS": "我的UNMS",
+    "onSaleUNMS": "在售UNMS",
+    "Directpushlist": "直推列表",
+    "myInvitation": "我的邀请",
+    "OneclickCoin":"一键发币",
+    "Link":"未连接到钱包",
+    "linkyes":"已连接",
+    "Tools":"工具",
+    "Swap":"兑换",
+    "DAO":"去中心化自治组织",
+    "chinese":"中文",
+    "english":"英文",
+    "yue":"余额",
+    "id":"身份",
+    "invite":"您的邀请",
+    "member":"会员",
+    "copy":"复制",
+    "Dailyoutput":"每日产出",
+    "production":"生产100天",
+    "purchasenow":"立即投入",
+    "InvitationLink":"邀请链接"
+  }
+}
