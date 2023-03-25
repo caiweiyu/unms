@@ -25,7 +25,7 @@
               </li>
           </ul>
           <div class="bg-tip">{{ $tc('home.teamManagement')}}</div>
-          <ul :class="['bg-card','bg-card2',active?'bg-card3' : '']">
+          <ul :class="['bg-card','bg-card2','bg-card3']">
               <li class="bg-card-bold">
                   <div class="div left">
                     <div class="top1">{{ teamUsdt }}USDT</div>
@@ -254,11 +254,11 @@
                 z-index: 1;
               }
               &-card3{
-                // min-height: pxttrem(688) !important;
+                min-height: pxttrem(194) !important;
               }
               &-card{
                 width: pxttrem(670);
-                height: pxttrem(388);
+                min-height: pxttrem(388);
                 background: #322267;
                 border-radius: pxttrem(16);
                 margin: pxttrem(40) auto 0;

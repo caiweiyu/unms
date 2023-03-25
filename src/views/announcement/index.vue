@@ -4,10 +4,10 @@
     <div class="bg">
         <div class="bg-card">
             <img src="../../assets/images/gongao.png" class="bg-card-tip" alt="">
-            <div class="title">公告</div>
-            <div class="content2">2023/08/09 11:36</div>
+            <div class="title">{{ $tc(`home.gonggao`) }}</div>
+            <div class="content2">xxx</div>
             <div class="content3">
-                邀好友，奖励多多
+                xxx,xxx
             </div>
         </div>
     </div>
