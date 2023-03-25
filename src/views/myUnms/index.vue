@@ -4,24 +4,24 @@
       <div class="bg">
           <ul class="bg-card">
               <li class="bg-card-li">
-                  <div class="left">当前余额</div>
-                  <div class="right">688,999.00 UNMS</div>
+                  <div class="left">{{ $tc(`home.yue`) }}</div>
+                  <div class="right">{{ UNMSBalance }} UNMS</div>
               </li>
               <li class="bg-card-li">
                   <div class="left">我的总投资</div>
-                  <div class="right">1500 USDT</div>
+                  <div class="right">{{ total_investment }} USDT</div>
               </li>
               <li class="bg-card-li">
                   <div class="left">正在工作投资</div>
-                  <div class="right">1000 USDT</div>
+                  <div class="right">{{ comingSoon_investment }} USDT</div>
               </li>
               <li class="bg-card-li">
                   <div class="left">已经工作天数</div>
-                  <div class="right">90 天</div>
+                  <div class="right">{{ getWork_date }} 天</div>
               </li>
               <li class="">
                 <div class="left">剩余天数</div>
-                <div class="right">90 天</div>
+                <div class="right">{{ last_day }} 天</div>
               </li>
           </ul>
           <div class="bg-tip">团队管理</div>
@@ -56,8 +56,8 @@
                 点击查看更多
               </li>
           </ul>
-          <div class="bg-tip">我的奖励</div>
-          <ul class="bg-card">
+          <!-- <div class="bg-tip">我的奖励</div> -->
+          <!-- <ul class="bg-card">
             <li class="bg-card-bold">
                   <div class="div left">
                     <div class="top1">688,990UNMS</div>
@@ -78,7 +78,7 @@
                     <div class="top2">社区业绩</div>
                   </div>
               </li>
-          </ul>
+          </ul> -->
           <div class="bg-tip">收益</div>
           <ul class="bg-card">
             <div class="bg-card-tip1">
@@ -91,15 +91,15 @@
             </div>
             <li class="bg-card-bold">
                   <div class="div left">
-                    <div class="top1">688,990UNMS</div>
+                    <div class="top1">{{ teamUsdt }} USDT</div>
                     <div class="top2">社区业绩</div>
                   </div>
                   <div class="div right">
-                    <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div>
+                    <!-- <div class="top1">688,990UNMS</div>
+                    <div class="top2">社区业绩</div> -->
                   </div>
               </li>
-              <li class="bg-card-bold">
+              <!-- <li class="bg-card-bold">
                   <div class="div left">
                     <div class="top1">688,990UNMS</div>
                     <div class="top2">社区业绩</div>
@@ -108,7 +108,7 @@
                     <div class="top1">688,990UNMS</div>
                     <div class="top2">社区业绩</div>
                   </div>
-              </li>
+              </li> -->
           </ul>
       </div>
     </div>
@@ -116,18 +116,80 @@
   
   <script>
   import Header from "../../components/header.vue"
+  import { mapState } from "vuex";
   export default {
       name:"myUnms",
+      // 每个order有个investTime字段，上整数时间戳，用当前时间
+      // 减去，再除以86400就是已经投资的天数，结束时间就是investTime加上100天
+      // 100*86400
       data(){
           return {
               
           }
       },
       methods:{
-  
+        
+      },
+      computed:{
+        ...mapState({
+              UNMSBalance:(state) => state.user.UNMSBalance,
+              userinfo:(state) => state.user.userinfo,
+              teamUsdt:(state) => state.user.teamUsdt,
+        }),
+        //总投资额
+        total_investment(){
+          if(this.userinfo.orders && this.userinfo.orders.length > 0){
+            let num = 0;
+            for(let i= 0;i< this.userinfo.orders.length;i++){
+              num +=this.userinfo.orders[i]['2']/Math.pow(10,18)
+            };
+            console.log('总投资额=',Number(num).toFixed(2))
+            return Number(num).toFixed(2)
+          }else{
+            return '0.00'
+          }
+        },
+        //正在投资
+        comingSoon_investment(){
+            if(this.userinfo.orders && this.userinfo.orders.length > 0){
+                let num = 0;
+                for(let i= 0;i< this.userinfo.orders.length;i++){
+                    if(i == this.userinfo.orders.length-1){
+                        num =this.userinfo.orders[i]['2']/Math.pow(10,18)
+                        // return Number(num).toFixed(2)
+                    }
+                };
+                console.log('投资中=',Number(num).toFixed(2))
+                return Number(num).toFixed(2)
+            }else{
+                return '0.00'
+            }
+        },
+        //已经工作天数
+        getWork_date(){
+          if(this.userinfo.orders && this.userinfo.orders.length > 0){
+                let res = null;
+                for(let i= 0;i< this.userinfo.orders.length;i++){
+                    if(i == this.userinfo.orders.length-1){
+                        res = new Date().getTime() - this.userinfo.orders[i]['investTime']*1000;
+                    }
+                };
+                // console.log('已经工作天数=',res)
+                return new Date(res).getDate()
+            }else{
+                return '0.00'
+            }
+        },
+        //剩余天数
+        last_day(){
+          return Number(100 - this.getWork_date)
+        }
       },
       components:{
           Header 
+      },
+      mounted(){
+        console.log('this.userinfo=',this.userinfo)
       }
   }
   </script>

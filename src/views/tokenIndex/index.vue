@@ -41,7 +41,9 @@
             <div class="line"></div>
             <div class="infoline info-id">
                 <div>{{ $tc(`home.id`) }}</div>
-                <div class="col">{{ $tc(`home.member`) }}V{{ userinfo.levelRate && userinfo.levelRate }}</div>
+                <div class="col">{{ $tc(`home.member`) }}
+                        {{ userinfo.levelRate && getNum(userinfo.levelRate) }}
+                </div>
             </div>
             <div class="line"></div>
             <div class="infoline info-invite">
@@ -79,7 +81,7 @@
             <div class="button" @click="input(item)">{{ $tc(`home.purchasenow`) }}</div>
         </div>
         <!--提示-->
-        <toastTip :isShow="isShow" />
+        <toastTip :title="msg" :isShow="isShow" />
     </div>
 </template>
 
@@ -95,7 +97,6 @@ export default {
             active1:false,
             isShow:false,
             lang:[this.$tc(`home.chinese`),this.$tc(`home.english`)],
-            // lang:[1,2],
             more:[
                 {name:this.$tc(`home.home`),router:"/"},
                 {name:this.$tc(`home.gonggao`),router:"announcement"},
@@ -109,6 +110,7 @@ export default {
                 {name:this.$tc(`home.Swap`),router:""},
                 {name:this.$tc(`home.DAO`),router:""},
             ],
+            msg:""
         }
     },
     components:{
@@ -131,9 +133,32 @@ export default {
         this.getValue();
     },
     mounted(){
-        
     },
     methods:{
+        //会员等级
+        getNum(data){
+            let result = null;
+            switch(data.toString()){
+                case "1":
+                    result ="V1"
+                break;
+                case "3":
+                    result ="V2"
+                break;
+                case "5":
+                    result = "V3"
+                break;
+                case "7":
+                    result = "V4"
+                break;
+                case "10":
+                    result = "V5"
+                break;
+                default:
+                    result = "V0"
+            }
+            return result
+        },
         //收益
         claimMint(){
             if(this.generate.avaliableAmount == "0") return;
@@ -175,16 +200,25 @@ export default {
     　　　　}
     　　},
         input(data){
+            if(this.userinfo.orders.length > 0){
+                this.msg = this.$tc('home.Cantbuyagain');
+                this.showToast();
+                return;
+            }
             this.getDapp(data)
+        },
+        showToast(){
+            this.isShow = true;
+            setTimeout(()=>{
+                this.isShow = false;
+            },1000);
         },
         goRouter(data){
             this.active = false;
             this.active1 = false;
             if(data == "") {
-                this.isShow = true;
-                setTimeout(()=>{
-                    this.isShow = false;
-                },1500);
+                this.msg = this.$tc('home.comingSoon');
+                this.showToast()
                 return
             }
             this.$router.push({ path: data });

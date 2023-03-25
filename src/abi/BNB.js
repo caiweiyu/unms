@@ -149,6 +149,7 @@ export default {
       // if(this.$store.state.user.userinfo.parent != 
       //'0x0000000000000000000000000000000000000000'){
       // }
+      console.log('参数',param)
       console.log('upadress',upadress)
       const loading = this.$loading({
         lock: true,
@@ -193,6 +194,20 @@ export default {
       dapp.methods.getUserList().call().then((res)=>{
         // this.$store.commit("user/commitGenerate",res);
         // console.log('查询所有的投资用户地址列表=',res)
+      }).catch((error)=>{
+        console.log('error=',error)
+      })
+      //查询当前币价
+      dapp.methods.getNowPrice().call().then((res)=>{
+        console.log('查询当前币价=',res);
+        this.$store.commit("user/commitUNMS_price",(res/Math.pow(10,18)).toFixed(6));
+      }).catch((error)=>{
+        console.log('error=',error)
+      })
+      //查询团队投入的U
+      dapp.methods.queryTeamUsdtAmount(WalletAddress).call().then((res)=>{
+        console.log('查询团队投入的usdt=',res);
+        this.$store.commit("user/committeamUsdt",(res/Math.pow(10,18)));
       }).catch((error)=>{
         console.log('error=',error)
       })

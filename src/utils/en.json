@@ -26,6 +26,8 @@
     "InvitationLink":"Invitation link",
     "InvestmentIncome":"Investment income",
     "InvitationtoReward":"Invitation to reward",
-    "DrawDown":"receive"
+    "DrawDown":"receive",
+    "comingSoon":"coming soon",
+    "Cantbuyagain":"Can't buy again"
   }
 }

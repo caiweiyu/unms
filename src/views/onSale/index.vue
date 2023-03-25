@@ -4,23 +4,23 @@
       <div class="bg">
           <ul class="bg-card">
               <li class="bg-card-li">
-                  <div class="left">当前余额</div>
-                  <div class="right">688,999.00 UNMS</div>
+                  <div class="left">{{ $tc(`home.yue`) }}</div>
+                  <div class="right">{{ UNMSBalance }} UNMS</div>
               </li>
               <li class="bg-card-li">
                   <div class="left">我的总投资</div>
-                  <div class="right">1500 USDT</div>
+                  <div class="right">{{ total_investment }} USDT</div>
               </li>
               <li class="bg-card-li">
                   <div class="left">正在工作投资</div>
-                  <div class="right">1000 USDT</div>
+                  <div class="right">{{ comingSoon_investment }} USDT</div>
               </li>
               <li class="">
-                <div class="left">剩余天数</div>
+                <div class="left">当前币价</div>
                 <div class="right"></div>
               </li>
               <li class="jj">
-                1 UNMS = 0.566 USDT
+                1 UNMS = {{ UNMS_price }} USDT
               </li>
               <li class="jj2">
                 备注：每日8点更新
@@ -32,6 +32,7 @@
   
   <script>
   import Header from "../../components/header.vue"
+  import { mapState } from "vuex";
   export default {
       name:"onSale",
       data(){
@@ -44,6 +45,41 @@
       },
       components:{
           Header 
+      },
+      computed:{
+        ...mapState({
+            UNMS_price:(state) => state.user.UNMS_price,
+            UNMSBalance:(state) => state.user.UNMSBalance,
+            userinfo:(state) => state.user.userinfo
+        }),
+        //总投资额
+        total_investment(){
+            if(this.userinfo.orders && this.userinfo.orders.length > 0){
+                let num = 0;
+                for(let i= 0;i< this.userinfo.orders.length;i++){
+                num +=this.userinfo.orders[i]['2']/Math.pow(10,18)
+                };
+                console.log('总投资额=',Number(num).toFixed(2))
+                return Number(num).toFixed(2)
+            }else{
+                return '0.00'
+            }
+        },
+        //正在投资
+        comingSoon_investment(){
+            if(this.userinfo.orders && this.userinfo.orders.length > 0){
+                let num = 0;
+                for(let i= 0;i< this.userinfo.orders.length;i++){
+                    if(i == this.userinfo.orders.length-1){
+                        num =this.userinfo.orders[i]['2']/Math.pow(10,18)
+                    }
+                };
+                console.log('投资中=',Number(num).toFixed(2))
+                return Number(num).toFixed(2)
+            }else{
+                return '0.00'
+            }
+        }
       }
   }
   </script>
