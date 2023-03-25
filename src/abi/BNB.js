@@ -18,8 +18,8 @@ export default {
     // var ReleaseToken='0x8503F0006d1D5E6Eb0Bb71f72B4187F04238FfEb';//私募合约
 
     //  测试UNMS
-    var unms_Coins = '0x1f248968d34f9b87Dc0c880B256e17C49FF1a702';
-    var dapp_addr = '0x60dB7d824da7cEC246C3e97a6fb387dA01B8d194';
+    var unms_Coins = '0x649679C910a78629c2011ddDe12E9d62E2D085E6';
+    var dapp_addr = '0xacF24F6d42821Be87291D780da6AE3B6ce1f6759';
     var usdt_addr = '0x7848EC33D21561b0755c423C7cf03f5018e18613';
     var PoolIndex = 0;//池索引
     var PoolData = [];//池数据
@@ -174,10 +174,20 @@ export default {
         loading.close()
       }
     }
+    //获取单个用户会员等级
+    Vue.prototype.getsingleInfo = async function(data){
+        await dapp.methods.getUserInfo(data).call().then((res)=>{
+            console.log('用户信息=',res)
+            return res.levelRate
+        }).catch((error)=>{
+            console.log('error=',error)
+            return "0";
+        })
+    }
     // 获取用户信息
     Vue.prototype.getInfo =async function(){
       //查询用户信息
-      dapp.methods.getUserInfo(WalletAddress).call().then((res)=>{
+      await dapp.methods.getUserInfo(WalletAddress).call().then((res)=>{
         this.$store.commit("user/commitUserinfo",res);
         console.log('用户信息=',res)
       }).catch((error)=>{

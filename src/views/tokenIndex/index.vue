@@ -55,7 +55,7 @@
                     <div class="copy" v-copy="MyAddress">{{ $tc(`home.copy`) }}</div>
                 </div>
             </div>
-            <div class="infoline info-acount">
+            <!-- <div class="infoline info-acount">
                 <div>{{ $tc('home.InvestmentIncome') }} : {{ generate.avaliableAmount && generate.avaliableAmount }}UNMS</div>
                 <div class="col">
                     <div class="btn-class" @click="claimMint">{{ $tc('home.DrawDown') }}</div>
@@ -66,7 +66,7 @@
                 <div class="col">
                     <div class="btn-class" @click="claimMint2">{{ $tc('home.DrawDown') }}</div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <!--投入卡片区-->
         <div class="info info1" v-for="(item,index) in list" :key="index">
@@ -80,13 +80,11 @@
             </div>
             <div class="button" @click="input(item)">{{ $tc(`home.purchasenow`) }}</div>
         </div>
-        <!--提示-->
-        <toastTip :title="msg" :isShow="isShow" />
+    
     </div>
 </template>
 
 <script>
-import toastTip from "../../components/toast_tip.vue"
 import { mapState } from "vuex";
 export default {
     name:'tokenIndex',
@@ -113,9 +111,6 @@ export default {
             msg:""
         }
     },
-    components:{
-        toastTip
-    },
     computed:{
       ...mapState({
             address:(state) => state.user.address,
@@ -125,6 +120,7 @@ export default {
       }),
       MyAddress(){
         console.log('location.hostname',location.hostname);
+        console.log('generate=',this.generate)
         return location.hostname+":"+location.port+"?ref="+this.address
       }
     },
@@ -201,24 +197,34 @@ export default {
     　　},
         input(data){
             if(this.userinfo.orders.length > 0){
-                this.msg = this.$tc('home.Cantbuyagain');
-                this.showToast();
+                this.$store.commit('user/committip',{
+                    status:true,
+                    content:this.$tc('home.Cantbuyagain')
+                });
+                setTimeout(()=>{
+                    this.$store.commit('user/committip',{
+                        status:false,
+                        content:this.$tc('home.Cantbuyagain')
+                    });
+                },1000)
                 return;
             }
             this.getDapp(data)
-        },
-        showToast(){
-            this.isShow = true;
-            setTimeout(()=>{
-                this.isShow = false;
-            },1000);
         },
         goRouter(data){
             this.active = false;
             this.active1 = false;
             if(data == "") {
-                this.msg = this.$tc('home.comingSoon');
-                this.showToast()
+                this.$store.commit('user/committip',{
+                    status:true,
+                    content:this.$tc('home.development')
+                });
+                setTimeout(()=>{
+                    this.$store.commit('user/committip',{
+                        status:false,
+                        content:this.$tc('home.development')
+                    });
+                },1000)
                 return
             }
             this.$router.push({ path: data });

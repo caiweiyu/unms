@@ -2,38 +2,10 @@
     <div class="box1">
       <Header :title="$tc('home.Directpushlist')"></Header>
       <div class="bg">
-          <ul class="bg-card">
-              <li class="bg-card-li">
-                  <div class="left">V1</div>
-                  <div class="right">DERG…¥%BF</div>
-              </li>
-              <li class="bg-card-li">
-                  <div class="left">V1</div>
-                  <div class="right">DERG…¥%BF</div>
-              </li>
-              <li class="bg-card-li">
-                  <div class="left">V1</div>
-                  <div class="right">DERG…¥%BF</div>
-              </li>
-              <li class="bg-card-li">
-                  <div class="left">V1</div>
-                  <div class="right">DERG…¥%BF</div>
-              </li>
-              <li class="bg-card-li">
-                  <div class="left">V1</div>
-                  <div class="right">DERG…¥%BF</div>
-              </li>
-              <li class="bg-card-li">
-                  <div class="left">V1</div>
-                  <div class="right">DERG…¥%BF</div>
-              </li>
-              <li class="bg-card-li">
-                  <div class="left">V1</div>
-                  <div class="right">DERG…¥%BF</div>
-              </li>
-              <li class="bg-card-li">
-                  <div class="left">V1</div>
-                  <div class="right">DERG…¥%BF</div>
+          <ul class="bg-card" v-if="userinfo.invited && userinfo.invited.length > 0">
+              <li class="bg-card-li" v-for="(item,index) in userinfo.invited" :key="index">
+                  <div class="left">{{ '会员'+getNum(getsingleInfo(item)) }}</div>
+                  <div class="right">{{ item.replace(/(.{6}).*(.{8})/, '$1...$2') }}</div>
               </li>
           </ul>
       </div>
@@ -42,6 +14,7 @@
   
   <script>
   import Header from "../../components/header.vue"
+  import { mapState } from "vuex";
   export default {
       name:"onSale",
       data(){
@@ -50,7 +23,36 @@
           }
       },
       methods:{
-  
+            //会员等级
+            getNum(data){
+                let result = null;
+                switch(data.toString()){
+                    case "1":
+                        result ="V1"
+                    break;
+                    case "3":
+                        result ="V2"
+                    break;
+                    case "5":
+                        result = "V3"
+                    break;
+                    case "7":
+                        result = "V4"
+                    break;
+                    case "10":
+                        result = "V5"
+                    break;
+                    default:
+                        result = "V0"
+                }
+                return result
+            },
+      },
+      computed:{
+        ...mapState({
+            address:(state) => state.user.address,
+            userinfo:(state) => state.user.userinfo,
+        })
       },
       components:{
           Header 

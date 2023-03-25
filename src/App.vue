@@ -1,10 +1,23 @@
 <template>
   <div id="app">
     <router-view/>
-    
+    <toastTip />
   </div>
 </template>
+<script>
+import toastTip from "./components/toast_tip.vue"
+export default {
+  name:'app',
+  data(){
+    return {
 
+    }
+  },
+  components:{
+    toastTip
+  }
+}
+</script>
 <style>
 html,body {
   background-color: #eee;

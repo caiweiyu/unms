@@ -28,87 +28,79 @@
           <ul class="bg-card">
               <li class="bg-card-bold">
                   <div class="div left">
-                    <div class="top1">688,990UNMS</div>
+                    <div class="top1">{{ teamUsdt }}USDT</div>
                     <div class="top2">社区业绩</div>
                   </div>
                   <div class="div right">
-                    <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top1">{{ userinfo.invited && userinfo.invited.length }}</div>
+                    <div class="top2">社区人数</div>
                   </div>
               </li>
               <li class="bg-card-li">
                   <div class="left2">直推列表</div>
                   <div class="right"></div>
               </li>
-              <li class="bg-card-li">
-                  <div class="left">正在工作投资</div>
-                  <div class="left">1000 USDT</div>
-              </li>
-              <li class="bg-card-li">
-                  <div class="left">已经工作天数</div>
-                  <div class="left">90 天</div>
-              </li>
-              <li class="bg-card-li">
-                <div class="left">剩余天数</div>
-                <div class="left">90 天</div>
+              <li class="bg-card-li"  v-for="(item,index) in userinfo.invited" :key="index"  v-if="userinfo.invited && userinfo.invited.length > 0">
+                  <div class="left">{{ '会员'+getNum(getsingleInfo(item)) }}</div>
+                  <div class="left">{{ item.replace(/(.{6}).*(.{8})/, '$1...$2') }}</div>
               </li>
               <li class="click_more">
                 点击查看更多
               </li>
           </ul>
-          <!-- <div class="bg-tip">我的奖励</div> -->
-          <!-- <ul class="bg-card">
+          <div class="bg-tip">我的奖励</div>
+          <ul class="bg-card">
             <li class="bg-card-bold">
                   <div class="div left">
-                    <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top1">{{  userinfo.zhituiBonusAmount && userinfo.zhituiBonusAmount }} UNMS</div>
+                    <div class="top2">直推</div>
                   </div>
                   <div class="div right">
-                    <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top1">{{ userinfo.jintuiBonusAmount && userinfo.jintuiBonusAmount }} UNMS</div>
+                    <div class="top2">间推</div>
                   </div>
               </li>
               <li class="bg-card-bold">
                   <div class="div left">
-                    <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top1">{{ userinfo.gedaiBonusAmount && userinfo.gedaiBonusAmount }} UNMS</div>
+                    <div class="top2">隔代</div>
                   </div>
                   <div class="div right">
-                    <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top1">{{  userinfo.jiedianBonusAmount && userinfo.jiedianBonusAmount }} UNMS</div>
+                    <div class="top2">节点</div>
                   </div>
               </li>
-          </ul> -->
+          </ul>
           <div class="bg-tip">收益</div>
           <ul class="bg-card">
             <div class="bg-card-tip1">
-                <div class="bg-card-tip1-title">推广UNMS</div>
-                <div class="bg-card-tip1-btn">领取</div>
+                <div class="bg-card-tip1-title">推广{{ userinfo.inviteBonusAmount && userinfo.inviteBonusAmount }}UNMS</div>
+                <div class="bg-card-tip1-btn" @click="claimMint">{{ $tc('home.DrawDown') }}</div>
             </div>
             <div class="bg-card-tip1">
-                <div class="bg-card-tip1-title">产出UNMS</div>
-                <div class="bg-card-tip1-btn">领取</div>
+                <div class="bg-card-tip1-title">产出{{ generate.avaliableAmount }}UNMS</div>
+                <div class="bg-card-tip1-btn" @click="claimMint2">{{ $tc('home.DrawDown') }}</div>
             </div>
             <li class="bg-card-bold">
                   <div class="div left">
-                    <div class="top1">{{ teamUsdt }} USDT</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top1">{{ teamUsdt }} UNMS</div>
+                    <div class="top2">今日产出</div>
                   </div>
                   <div class="div right">
-                    <!-- <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div> -->
+                    <div class="top1">{{ generate.mintToken }} UNMS</div>
+                    <div class="top2">目前产出</div>
                   </div>
               </li>
-              <!-- <li class="bg-card-bold">
+              <li class="bg-card-bold">
                   <div class="div left">
-                    <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top1">{{ userinfo.claimedInviteBonusAmount && userinfo.claimedInviteBonusAmount }}UNMS</div>
+                    <div class="top2">已领取总和</div>
                   </div>
                   <div class="div right">
-                    <div class="top1">688,990UNMS</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top1">{{ userinfo.inviteBonusAmount && userinfo.inviteBonusAmount }} UNMS</div>
+                    <div class="top2">推荐奖励总和</div>
                   </div>
-              </li> -->
+              </li>
           </ul>
       </div>
     </div>
@@ -128,13 +120,49 @@
           }
       },
       methods:{
-        
+          //会员等级
+          getNum(data){
+            let result = null;
+            switch(data.toString()){
+                case "1":
+                    result ="V1"
+                break;
+                case "3":
+                    result ="V2"
+                break;
+                case "5":
+                    result = "V3"
+                break;
+                case "7":
+                    result = "V4"
+                break;
+                case "10":
+                    result = "V5"
+                break;
+                default:
+                    result = "V0"
+            }
+            return result
+        },
+        //收益
+        claimMint(){
+            if(this.generate.avaliableAmount == "0") return;
+            this.claimMintFn()
+        },
+        //邀请奖励
+        claimMint2(){
+            //???
+            if(this.userinfo.inviteBonusAmount > this.userinfo.claimedInviteBonusAmount){
+                this.claimMintFn2()
+            }
+        },
       },
       computed:{
         ...mapState({
               UNMSBalance:(state) => state.user.UNMSBalance,
               userinfo:(state) => state.user.userinfo,
               teamUsdt:(state) => state.user.teamUsdt,
+              generate:(state) => state.user.generate
         }),
         //总投资额
         total_investment(){
@@ -177,7 +205,7 @@
                 // console.log('已经工作天数=',res)
                 return new Date(res).getDate()
             }else{
-                return '0.00'
+                return '0'
             }
         },
         //剩余天数
@@ -189,7 +217,7 @@
           Header 
       },
       mounted(){
-        console.log('this.userinfo=',this.userinfo)
+        console.log('this.generate=',this.generate)
       }
   }
   </script>

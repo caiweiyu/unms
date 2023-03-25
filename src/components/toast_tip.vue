@@ -1,27 +1,23 @@
 <template>
     <div>
-        <div class="bgColor" v-show="isShow">
-            <div class="bgColor_toast">{{ title }}</div>
+        <div class="bgColor" v-show="tip.status">
+            <div class="bgColor_toast">{{ tip.content }}</div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
-    props:{
-        title:{
-            type:String,
-            default:'敬请期待'
-        },
-        isShow:{
-            type:Boolean,
-            default:false
-        }
-    },
     data(){
         return {
 
         }
+    },
+    computed:{
+      ...mapState({
+        tip:(state) => state.user.tip
+      })
     }
 }
 </script>
@@ -41,6 +37,7 @@ export default {
         &_toast{    
             position: absolute;
             width: pxttrem(259);
+            // padding: ;
             top: 50%;
             left:50%;
             transform: translate(-50%,-50%);

@@ -31,6 +31,10 @@ const user = {
         UNMSBalance:0, //unms余额
         UNMS_price:0,  //unms币价
         teamUsdt:0,  //团队投入的u
+        tip:{ //提示
+            status:false,
+            content:""
+        }
     },
     mutations:{
         commitisConnected: (state, isConnected) => {
@@ -107,6 +111,9 @@ const user = {
         },
         committeamUsdt:(state,teamUsdt)=>{
             state.teamUsdt = teamUsdt;
+        },
+        committip:(state,tip)=>{
+            state.tip = tip;
         }
     },
     actions:{

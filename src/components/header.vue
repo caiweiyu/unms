@@ -12,13 +12,10 @@
             <div class="title">{{ title }}</div>
             <div class="right" @click="hanlder"></div>
         </div>
-        <!--提示-->
-        <toastTip :isShow="isShow" />
     </div>
 </template>
 
 <script>
-import toastTip from "./toast_tip.vue"
 export default {
     props:{
         title:{
@@ -42,11 +39,9 @@ export default {
                 {name:"Tools",router:""},
                 {name:"Swap",router:""},
                 {name:"DAO",router:""},
-            ]
+            ],
+            msg:""
         }
-    },
-    components:{
-        toastTip
     },
     methods:{
         refuse(){
@@ -61,10 +56,16 @@ export default {
             this.active1 = false;
             if(data == "") {
                 // console.log(data,data == "",111)
-                this.isShow = true;
+                this.$store.commit('user/committip',{
+                    status:true,
+                    content:this.$tc('home.development')
+                });
                 setTimeout(()=>{
-                    this.isShow = false;
-                },1500);
+                    this.$store.commit('user/committip',{
+                        status:false,
+                        content:this.$tc('home.development')
+                    });
+                },1000);
                 return
             }
             this.$router.push({ path: data });
