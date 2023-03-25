@@ -23,6 +23,9 @@
     "Dailyoutput":"每日产出",
     "production":"生产100天",
     "purchasenow":"立即投入",
-    "InvitationLink":"邀请链接"
+    "InvitationLink":"邀请链接",
+    "InvestmentIncome":"投资收益",
+    "InvitationtoReward":"邀请奖励",
+    "DrawDown":"领取"
   }
 }

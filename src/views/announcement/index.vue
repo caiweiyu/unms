@@ -7,7 +7,7 @@
             <div class="title">公告</div>
             <div class="content2">2023/08/09 11:36</div>
             <div class="content3">
-                这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文这是正文
+                邀好友，奖励多多
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media only screen and (max-width: 780px) {
+// @media only screen and (max-width: 780px) {
   $design-width:750; //设计稿width
   @function pxttrem($px) {
     @return $px/$design-width*20.06817+rem;//23.4375
@@ -88,6 +88,6 @@ export default {
             }
         }
     }
-}
+// }
 
 </style>

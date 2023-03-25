@@ -3,6 +3,8 @@ import Vue from 'vue';
 
 // import stf_abi3 from "@/abi/stf_abi3.json"
 import unms_abi from '@/abi/Unms.json'
+import Dapp_abi from '@/abi/Dapp.json'
+import Usdt_abi from '@/abi/Usdt.json'
 
 import { Toast } from 'vant';
 Vue.use(Toast);
@@ -16,9 +18,16 @@ export default {
     // var ReleaseToken='0x8503F0006d1D5E6Eb0Bb71f72B4187F04238FfEb';//私募合约
 
     //  测试UNMS
-    var unms_Coins = '0x5896AA889Db096f57Bcdc42c935A56933Fc1AF21';
+    var unms_Coins = '0x1f248968d34f9b87Dc0c880B256e17C49FF1a702';
+    var dapp_addr = '0x60dB7d824da7cEC246C3e97a6fb387dA01B8d194';
+    var usdt_addr = '0x7848EC33D21561b0755c423C7cf03f5018e18613';
     var PoolIndex = 0;//池索引
     var PoolData = [];//池数据
+
+    //methods
+    var unms = new web3.eth.Contract(unms_abi,unms_Coins);
+    var dapp = new web3.eth.Contract(Dapp_abi,dapp_addr);
+    var usdt = new web3.eth.Contract(Usdt_abi,usdt_addr);
 
     // 链接钱包
     Vue.prototype.LinkBNB = function (e) {
@@ -69,9 +78,11 @@ export default {
                 this.$store.commit("user/commitAdress",res[0]);
                 //获取钱包余额
                 web3.eth.getBalance(res[0]).then(res=>{
+                  console.log('钱包余额1=',res)
                   this.$store.commit('user/commitbnbBalance',(Number(res)/Math.pow(10,18)).toFixed(2))
                 });
                 this.getUnms()
+                this.getInfo()
                 if (e != 1) {
                   // this.loginSuccessful(res[0]); 
                 }
@@ -89,9 +100,11 @@ export default {
               this.$store.commit("user/commitAdress",res[0]);
               //获取钱包余额
               web3.eth.getBalance(res[0]).then(res=>{
+                console.log('钱包余额2=',res)
                 this.$store.commit('user/commitbnbBalance',(Number(res)/Math.pow(10,18)).toFixed(2))
               });
               this.getUnms()
+              this.getInfo()
               //   this.ProductListABI(res[0])
               if (e != 1) {
                 // this.loginSuccessful(res[0])
@@ -109,15 +122,112 @@ export default {
     };
     // UNMS
     Vue.prototype.getUnms = function(){
-      var unms = new web3.eth.Contract(unms_abi,unms_Coins);
       console.log('WalletAddress=',WalletAddress)
       unms.methods.getTodayLimitAmount(WalletAddress).call().then((res)=>{
-        console.log('res',res)
+        console.log('买的数量-限购总量=',res)
+      }).catch((error)=>{
+        console.log('error=',error)
+      })
+      unms.methods.getReleaseableAmount().call().then((res)=>{
+        var param = (res/Math.pow(10,18)).toString();
+        console.log('查某个地址今天可以买的数量，还顺便返回当天限购总量=',param)
+      }).catch((error)=>{
+        console.log('error=',error)
+      })
+      //unms余额
+      unms.methods.balanceOf(WalletAddress).call().then((res)=>{
+        console.log('数量===',res)
+        this.$store.commit("user/commitUNMSBalance",(Number(res)/Math.pow(10,18)).toFixed(2));
       }).catch((error)=>{
         console.log('error=',error)
       })
     }
-    // dapp
-    
+    // DAPP
+    Vue.prototype.getDapp = async function(data){
+      var param = (data * Math.pow(10,18)).toString();
+      var upadress = this.$store.state.user.myUpaddress;//获取上级地址
+      // if(this.$store.state.user.userinfo.parent != 
+      //'0x0000000000000000000000000000000000000000'){
+      // }
+      console.log('upadress',upadress)
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      try {
+        await usdt.methods.approve(dapp_addr,param).send({from:WalletAddress}).then((res)=>{
+          if(res.status){
+            dapp.methods.invest(param,upadress).send({ from : WalletAddress }).then((res)=>{
+                console.log('res=',res)
+                loading.close()
+              }).catch((error)=>{
+                console.log('error=',error)
+                loading.close()
+            })
+          }
+        })
+      } catch (error) {
+        console.log('error=',error)
+        loading.close()
+      }
+    }
+    // 获取用户信息
+    Vue.prototype.getInfo =async function(){
+      //查询用户信息
+      dapp.methods.getUserInfo(WalletAddress).call().then((res)=>{
+        this.$store.commit("user/commitUserinfo",res);
+        console.log('用户信息=',res)
+      }).catch((error)=>{
+        console.log('error=',error)
+      })
+      //查询已产出的收益
+      dapp.methods.queryMintToken(WalletAddress).call().then((res)=>{
+        this.$store.commit("user/commitGenerate",res);
+        console.log('产出收益=',res)
+      }).catch((error)=>{
+        console.log('error=',error)
+      })
+      //查询所有的投资用户地址列表
+      dapp.methods.getUserList().call().then((res)=>{
+        // this.$store.commit("user/commitGenerate",res);
+        // console.log('查询所有的投资用户地址列表=',res)
+      }).catch((error)=>{
+        console.log('error=',error)
+      })
+    }
+    //领取收益
+    Vue.prototype.claimMintFn = async function(){
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+        await dapp.methods.claimMintToken().call().then((res)=>{
+            console.log('领取res=',res)
+            loading.close()
+          }).catch((error)=>{
+            console.log('领取error=',error)
+            loading.close()
+        })
+    },
+    //邀请奖励
+    Vue.prototype.claimMintFn2 = async function(){
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+          await dapp.methods.claimInviteBonus().call().then((res)=>{
+              console.log('领取res=',res)
+              loading.close()
+            }).catch((error)=>{
+              console.log('领取error=',error)
+              loading.close()
+          })
+      }
   }
 }

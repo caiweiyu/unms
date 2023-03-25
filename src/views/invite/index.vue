@@ -9,26 +9,36 @@
               </li>
               <li class="otherCard">
                   <!-- <div class="text"> -->
-                    {{ address_code }}
+                    {{ MyAddress }}
                   <!-- </div> -->
               </li>
-              <li class="btn_g" v-copy="address_code">{{ $tc(`home.copy`) }}</li>
+              <li class="btn_g" v-copy="MyAddress">{{ $tc(`home.copy`) }}</li>
           </ul>
       </div>
     </div>
   </template>
   
   <script>
+  import { mapState } from "vuex";
   import Header from "../../components/header.vue"
   export default {
       name:"invite",
       data(){
           return {
-             address_code:"JGFAGAFDGAFDG#T¥#TWFFGADT¥TFASDGF4583458’FDGREFG%"
+            //  address_code:"JGFAGAFDGAFDG#T¥#TWFFGADT¥TFASDGF4583458’FDGREFG%"
           }
       },
       methods:{
   
+      },
+      computed:{
+        ...mapState({
+            address:(state) => state.user.address
+        }),
+        MyAddress(){
+            console.log('location.hostname',location.hostname);
+            return location.hostname+":"+location.port+"?ref="+this.address
+        }
       },
       components:{
           Header 
@@ -37,7 +47,7 @@
   </script>
   
   <style lang="scss" scoped>
-  @media only screen and (max-width: 780px) {
+//   @media only screen and (max-width: 780px) {
     $design-width:750; //设计稿width
     @function pxttrem($px) {
       @return $px/$design-width*20.06817+rem;//23.4375
@@ -215,6 +225,6 @@
               }
           }
       }
-  }
+//   }
   
   </style>

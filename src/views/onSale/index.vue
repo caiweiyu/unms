@@ -49,7 +49,7 @@
   </script>
   
   <style lang="scss" scoped>
-  @media only screen and (max-width: 780px) {
+//   @media only screen and (max-width: 780px) {
     $design-width:750; //设计稿width
     @function pxttrem($px) {
       @return $px/$design-width*20.06817+rem;//23.4375
@@ -193,6 +193,6 @@
               }
           }
       }
-  }
+//   }
   
   </style>

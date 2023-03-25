@@ -23,6 +23,9 @@
     "Dailyoutput":"Daily output",
     "production":"100 days of production",
     "purchasenow":"purchase now",
-    "InvitationLink":"Invitation link"
+    "InvitationLink":"Invitation link",
+    "InvestmentIncome":"Investment income",
+    "InvitationtoReward":"Invitation to reward",
+    "DrawDown":"receive"
   }
 }

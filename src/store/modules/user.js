@@ -23,7 +23,12 @@ const user = {
         userinfo:{
 
         }, //用户信息
-        isSwitch:true //全局关闭窗口
+        generate:{
+
+        },//产生收益
+        isSwitch:true, //全局关闭窗口
+        myUpaddress:"",
+        UNMSBalance:0 //unms余额
     },
     mutations:{
         commitisConnected: (state, isConnected) => {
@@ -85,6 +90,15 @@ const user = {
         },
         commitisSwitch:(state,isSwitch)=>{
             state.isSwitch = isSwitch;
+        },
+        commitmyUpaddress:(state,myUpaddress)=>{
+            state.myUpaddress = myUpaddress;
+        },
+        commitGenerate:(state,generate)=>{
+            state.generate = generate;
+        },
+        commitUNMSBalance:(state,UNMSBalance)=>{
+            state.UNMSBalance = UNMSBalance;
         }
     },
     actions:{

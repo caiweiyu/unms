@@ -6,6 +6,7 @@ import store from "./store/index"
 import Vant from 'vant'
 import i18n from './utils/index';
 import formatDateTime from "./utils/date"
+import getQueryString from "./utils/deal"
 import SliderShow from 'slider-show'
 // import formatDateTime from "./utils/date"
 import '../src/utils/main' 
@@ -19,6 +20,7 @@ Vue.use(SliderShow)
 
 Vue.use(Vuex)
 Vue.prototype.formatDateTime = formatDateTime
+Vue.prototype.getQueryString = getQueryString
 import "./assets/css/initialization.css";
 import "./assets/css/index.css";
 Vue.config.productionTip = false;

@@ -36,21 +36,33 @@
         <div class="info">
             <div class="infoline info-acount">
                 <div>{{ $tc(`home.yue`) }}</div>
-                <div class="col">20123132.00 UNMS</div>
+                <div class="col">{{ UNMSBalance }} UNMS</div>
             </div>
             <div class="line"></div>
             <div class="infoline info-id">
                 <div>{{ $tc(`home.id`) }}</div>
-                <div class="col">{{ $tc(`home.member`) }}V1</div>
+                <div class="col">{{ $tc(`home.member`) }}V{{ userinfo.levelRate && userinfo.levelRate }}</div>
             </div>
             <div class="line"></div>
             <div class="infoline info-invite">
                 <div>{{ $tc(`home.invite`) }}</div>
                 <div class="con">
                     <div class="text">
-                        <div>fklnakgalk…335tcvfr3</div>
+                        <div>{{ MyAddress && MyAddress.replace(/(.{15}).*(.{6})/, '$1...$2') }}</div>
                     </div>
                     <div class="copy" v-copy="MyAddress">{{ $tc(`home.copy`) }}</div>
+                </div>
+            </div>
+            <div class="infoline info-acount">
+                <div>{{ $tc('home.InvestmentIncome') }} : {{ generate.avaliableAmount && generate.avaliableAmount }}UNMS</div>
+                <div class="col">
+                    <div class="btn-class" @click="claimMint">{{ $tc('home.DrawDown') }}</div>
+                </div>
+            </div>
+            <div class="infoline info-acount">
+                <div>{{ $tc('home.InvitationtoReward') }}</div>
+                <div class="col">
+                    <div class="btn-class" @click="claimMint2">{{ $tc('home.DrawDown') }}</div>
                 </div>
             </div>
         </div>
@@ -64,7 +76,7 @@
                 <div>{{ $tc(`home.Dailyoutput`) }}2%</div>
                 <div>{{ $tc(`home.production`) }}</div>
             </div>
-            <div class="button">{{ $tc(`home.purchasenow`) }}</div>
+            <div class="button" @click="input(item)">{{ $tc(`home.purchasenow`) }}</div>
         </div>
         <!--提示-->
         <toastTip :isShow="isShow" />
@@ -79,7 +91,6 @@ export default {
     data(){
         return {
             list:[100,500,1000],
-            MyAddress:"",
             active:false,
             active1:false,
             isShow:false,
@@ -97,7 +108,7 @@ export default {
                 {name:this.$tc(`home.Tools`),router:""},
                 {name:this.$tc(`home.Swap`),router:""},
                 {name:this.$tc(`home.DAO`),router:""},
-            ]
+            ],
         }
     },
     components:{
@@ -106,15 +117,66 @@ export default {
     computed:{
       ...mapState({
             address:(state) => state.user.address,
-      })
+            userinfo:(state) => state.user.userinfo,
+            generate:(state) => state.user.generate,
+            UNMSBalance:(state) => state.user.UNMSBalance
+      }),
+      MyAddress(){
+        console.log('location.hostname',location.hostname);
+        return location.hostname+":"+location.port+"?ref="+this.address
+      }
     },
     created(){
         this.LoginQb();
-        // this.getUnmsfn()
+        this.getValue();
     },
     mounted(){
+        
     },
     methods:{
+        //收益
+        claimMint(){
+            if(this.generate.avaliableAmount == "0") return;
+            this.claimMintFn()
+        },
+        //邀请奖励
+        claimMint2(){
+            //???
+            if(this.userinfo.inviteBonusAmount > this.userinfo.claimedInviteBonusAmount){
+                this.claimMintFn2()
+            }
+        },
+        getValue(){
+            let data = this.GetUrlParam('ref');
+            if(data != ""){
+                this.$store.commit('user/commitmyUpaddress',data)
+            }
+        },
+        //获取ref参数值
+        GetUrlParam(paraName) {
+    　　　　var url = document.location.toString();
+    　　　　var arrObj = url.split("?");
+
+    　　　　if (arrObj.length > 1) {
+    　　　　　　var arrPara = arrObj[1].split("&");
+    　　　　　　var arr;
+
+    　　　　　　for (var i = 0; i < arrPara.length; i++) {
+    　　　　　　　　arr = arrPara[i].split("=");
+
+    　　　　　　　　if (arr != null && arr[0] == paraName) {
+    　　　　　　　　　　return arr[1];
+    　　　　　　　　}
+    　　　　　　}
+    　　　　　　return "";
+    　　　　}
+    　　　　else {
+    　　　　　　return "";
+    　　　　}
+    　　},
+        input(data){
+            this.getDapp(data)
+        },
         goRouter(data){
             this.active = false;
             this.active1 = false;
@@ -154,7 +216,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@media only screen and (max-width: 780px) {
+// @media only screen and (max-width: 780px) {
   $design-width:750; //设计稿width
   @function pxttrem($px) {
     @return $px/$design-width*20.06817+rem;//23.4375
@@ -321,7 +383,9 @@ export default {
 
   .info{
     width: pxttrem(670);
-    height: pxttrem(268);
+    // height: pxttrem(268);
+
+
     background: #322267;
     border-radius: pxttrem(16);
     margin: pxttrem(20) auto 0;
@@ -377,6 +441,16 @@ export default {
         opacity: 0.08;
         margin: 0 auto;
     }
+    .btn-class{
+        height: pxttrem(50);
+        // width: pxttrem(100);
+        padding: 0 pxttrem(10);
+        text-align: center;
+        line-height: pxttrem(50);
+        font-size: pxttrem(28);
+        color: #fff;
+        background: linear-gradient(135deg, #593FFB 0%, #BF14F4 100%);
+    }
     .infoline{
         width: pxttrem(589);
         height: pxttrem(88);
@@ -421,8 +495,8 @@ export default {
   .info1{
     height: pxttrem(296);
   }
-}
-@media only screen and (min-width: 780px){
+// }
+// @media only screen and (min-width: 780px){
     
-}
+// }
 </style>
