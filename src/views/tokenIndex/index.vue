@@ -69,7 +69,7 @@
             </div> -->
         </div>
         <!--投入卡片区-->
-        <div class="info info1" v-for="(item,index) in list" :key="index">
+        <div :class="['info','info1',index==list.length-1 ? 'info2' : '']" v-for="(item,index) in list" :key="index">
             <div class="card">
                 <div class="card-info"></div>
                 <div class="card-price">{{ item+'USDT'}}</div>
@@ -169,6 +169,7 @@ export default {
         },
         getValue(){
             let data = this.GetUrlParam('ref');
+            console.log('参数=',data)
             if(data != ""){
                 this.$store.commit('user/commitmyUpaddress',data)
             }
@@ -177,14 +178,11 @@ export default {
         GetUrlParam(paraName) {
     　　　　var url = document.location.toString();
     　　　　var arrObj = url.split("?");
-
     　　　　if (arrObj.length > 1) {
     　　　　　　var arrPara = arrObj[1].split("&");
     　　　　　　var arr;
-
     　　　　　　for (var i = 0; i < arrPara.length; i++) {
     　　　　　　　　arr = arrPara[i].split("=");
-
     　　　　　　　　if (arr != null && arr[0] == paraName) {
     　　　　　　　　　　return arr[1];
     　　　　　　　　}
@@ -316,6 +314,9 @@ export default {
             margin: 0 auto;
             cursor: pointer;
         }
+        li:active{
+            color:rgba(256,256,256,0.5) !important;
+        }
         &-li{
             border-bottom: pxttrem(2) solid rgba(255, 255, 255, 0.2);
         }
@@ -379,6 +380,7 @@ export default {
     height: pxttrem(412);
     background: url("../../assets/images/banner.png") no-repeat center;
     background-size: 100% 100%;
+    margin: 0 auto;
     position: relative;
     &-top{
         display: flex;
@@ -474,6 +476,10 @@ export default {
         line-height: pxttrem(84);
         cursor: pointer;
     }
+    .button:active{
+        background: linear-gradient(135deg, #593FFB 0%, #BF14F4 100%) !important;
+        opacity: 0.6 !important;
+    }
     .line{
         width: pxttrem(589);
         height: pxttrem(2);
@@ -535,6 +541,9 @@ export default {
   .info1{
     height: pxttrem(296);
   }
+//   .info2{
+//     margin-bottom: pxttrem(20);
+//   }
 // }
 // @media only screen and (min-width: 780px){
     

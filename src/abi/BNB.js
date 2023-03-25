@@ -87,10 +87,10 @@ export default {
                   // this.loginSuccessful(res[0]); 
                 }
               }).catch((error) => {
-                this.$message.error("请登录1");
+                this.$message.error("link please");
               })
             }).catch((error) => {
-              this.$message.error("请登录2");
+              this.$message.error("link please");
             })
           } else {
             ethereum.enable().then(res => {
@@ -111,13 +111,13 @@ export default {
               }
 
             }).catch((error) => {
-              this.$message.error("请登录3");
+              this.$message.error("link please");
               console.log('error111=',error)
             })
           }
         })
       } else {
-        this.$message.error("请登录4");
+        this.$message.error("link please");
       }
     };
     // UNMS

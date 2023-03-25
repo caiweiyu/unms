@@ -28,17 +28,17 @@ export default {
             active:false,
             isShow:false,
             more:[
-                {name:"首页",router:"/"},
-                {name:"公告",router:"announcement"},
-                {name:"关于",router:"aboutPage"},
-                {name:"我的UNMS",router:"myUnms"},
-                {name:"在售UNMS",router:"onSale"},
-                {name:"直推列表",router:"transductive"},
-                {name:"我的邀请",router:"invite"},
-                {name:"一键发币",router:""},
-                {name:"Tools",router:""},
-                {name:"Swap",router:""},
-                {name:"DAO",router:""},
+                {name:this.$tc(`home.home`),router:"/"},
+                {name:this.$tc(`home.gonggao`),router:"announcement"},
+                {name:this.$tc(`home.about`),router:"aboutPage"},
+                {name:this.$tc(`home.myUNMS`),router:"myUnms"},
+                {name:this.$tc(`home.onSaleUNMS`),router:"onSale"},
+                {name:this.$tc(`home.Directpushlist`),router:"transductive"},
+                {name:this.$tc(`home.myInvitation`),router:"invite"},
+                {name:this.$tc(`home.OneclickCoin`),router:""},
+                {name:this.$tc(`home.Tools`),router:""},
+                {name:this.$tc(`home.Swap`),router:""},
+                {name:this.$tc(`home.DAO`),router:""},
             ],
             msg:""
         }
@@ -95,6 +95,9 @@ export default {
         background-size: 100% 100%;
         margin-left: pxttrem(40);
     }
+    .left:active{
+        opacity: .6;
+    }
     .title{
         font-size: pxttrem(32);
         font-family: PingFangSC-Medium, PingFang SC;
@@ -107,6 +110,9 @@ export default {
         background: url('../assets/images/gengduo.png')center no-repeat;
         background-size: 100% 100%;
         margin-right: pxttrem(40);
+    }
+    .right:active{
+        opacity: 0.6;
     }
   }
   .active{

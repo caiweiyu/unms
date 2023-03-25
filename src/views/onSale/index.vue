@@ -8,22 +8,22 @@
                   <div class="right">{{ UNMSBalance }} UNMS</div>
               </li>
               <li class="bg-card-li">
-                  <div class="left">我的总投资</div>
+                  <div class="left">{{ $tc('home.Mytotalinvestment')}}</div>
                   <div class="right">{{ total_investment }} USDT</div>
               </li>
               <li class="bg-card-li">
-                  <div class="left">正在工作投资</div>
+                  <div class="left">{{ $tc('home.Workinginvestment') }}</div>
                   <div class="right">{{ comingSoon_investment }} USDT</div>
               </li>
               <li class="">
-                <div class="left">当前币价</div>
+                <div class="left">{{ $tc('home.CurrentCurrency') }}</div>
                 <div class="right"></div>
               </li>
               <li class="jj">
                 1 UNMS = {{ UNMS_price }} USDT
               </li>
               <li class="jj2">
-                备注：每日8点更新
+                {{ $tc('home.remark') }}
               </li>
           </ul>
       </div>

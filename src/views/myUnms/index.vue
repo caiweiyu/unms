@@ -8,97 +8,97 @@
                   <div class="right">{{ UNMSBalance }} UNMS</div>
               </li>
               <li class="bg-card-li">
-                  <div class="left">我的总投资</div>
+                  <div class="left">{{ $tc(`home.Mytotalinvestment`) }}</div>
                   <div class="right">{{ total_investment }} USDT</div>
               </li>
               <li class="bg-card-li">
-                  <div class="left">正在工作投资</div>
+                  <div class="left">{{ $tc(`home.Workinginvestment`) }}</div>
                   <div class="right">{{ comingSoon_investment }} USDT</div>
               </li>
               <li class="bg-card-li">
-                  <div class="left">已经工作天数</div>
-                  <div class="right">{{ getWork_date }} 天</div>
+                  <div class="left">{{ $tc(`home.Daysworked`) }}</div>
+                  <div class="right">{{ getWork_date }} {{ $tc(`home.day`) }}</div>
               </li>
               <li class="">
-                <div class="left">剩余天数</div>
-                <div class="right">{{ last_day }} 天</div>
+                <div class="left">{{ $tc('home.remainingDays')}}</div>
+                <div class="right">{{ last_day }} {{ $tc(`home.day`) }}</div>
               </li>
           </ul>
-          <div class="bg-tip">团队管理</div>
-          <ul class="bg-card">
+          <div class="bg-tip">{{ $tc('home.teamManagement')}}</div>
+          <ul :class="['bg-card','bg-card2',active?'bg-card3' : '']">
               <li class="bg-card-bold">
                   <div class="div left">
                     <div class="top1">{{ teamUsdt }}USDT</div>
-                    <div class="top2">社区业绩</div>
+                    <div class="top2">{{ $tc('home.CommunityPerformance')}}</div>
                   </div>
                   <div class="div right">
                     <div class="top1">{{ userinfo.invited && userinfo.invited.length }}</div>
-                    <div class="top2">社区人数</div>
+                    <div class="top2">{{ $tc('home.CommunitySize')}}</div>
                   </div>
               </li>
-              <li class="bg-card-li">
-                  <div class="left2">直推列表</div>
+              <!-- <li class="bg-card-li">
+                  <div class="left2">{{ $tc('home.directListDatabase')}}</div>
                   <div class="right"></div>
               </li>
               <li class="bg-card-li"  v-for="(item,index) in userinfo.invited" :key="index"  v-if="userinfo.invited && userinfo.invited.length > 0">
-                  <div class="left">{{ '会员'+getNum(getsingleInfo(item)) }}</div>
+                  <div class="left">{{ this.$tc('home.member')+getNum(getsingleInfo(item)) }}</div>
                   <div class="left">{{ item.replace(/(.{6}).*(.{8})/, '$1...$2') }}</div>
               </li>
-              <li class="click_more">
-                点击查看更多
-              </li>
+              <li class="click_more" v-if="userinfo.invited.length > 0" @click="More">
+                {{ $tc('home.ClickForMore') }}
+              </li> -->
           </ul>
-          <div class="bg-tip">我的奖励</div>
+          <div class="bg-tip">{{ $tc('home.MyRward') }}</div>
           <ul class="bg-card">
             <li class="bg-card-bold">
                   <div class="div left">
                     <div class="top1">{{  userinfo.zhituiBonusAmount && userinfo.zhituiBonusAmount }} UNMS</div>
-                    <div class="top2">直推</div>
+                    <div class="top2">{{ $tc('home.DirectReferrals') }}</div>
                   </div>
                   <div class="div right">
                     <div class="top1">{{ userinfo.jintuiBonusAmount && userinfo.jintuiBonusAmount }} UNMS</div>
-                    <div class="top2">间推</div>
+                    <div class="top2">{{ $tc('home.IndirectRecommendation') }}</div>
                   </div>
               </li>
               <li class="bg-card-bold">
                   <div class="div left">
                     <div class="top1">{{ userinfo.gedaiBonusAmount && userinfo.gedaiBonusAmount }} UNMS</div>
-                    <div class="top2">隔代</div>
+                    <div class="top2">{{ $tc('home.Intergenerationalrecommendation') }}</div>
                   </div>
                   <div class="div right">
                     <div class="top1">{{  userinfo.jiedianBonusAmount && userinfo.jiedianBonusAmount }} UNMS</div>
-                    <div class="top2">节点</div>
+                    <div class="top2">{{ $tc('home.Node') }}</div>
                   </div>
               </li>
           </ul>
-          <div class="bg-tip">收益</div>
+          <div class="bg-tip">{{ $tc('home.earnings') }}</div>
           <ul class="bg-card">
             <div class="bg-card-tip1">
-                <div class="bg-card-tip1-title">推广{{ userinfo.inviteBonusAmount && userinfo.inviteBonusAmount }}UNMS</div>
+                <div class="bg-card-tip1-title">{{ $tc('home.promotion') }}{{ userinfo.inviteBonusAmount && userinfo.inviteBonusAmount }}UNMS</div>
                 <div class="bg-card-tip1-btn" @click="claimMint">{{ $tc('home.DrawDown') }}</div>
             </div>
             <div class="bg-card-tip1">
-                <div class="bg-card-tip1-title">产出{{ generate.avaliableAmount }}UNMS</div>
+                <div class="bg-card-tip1-title">{{ $tc('home.output') }}{{ generate.avaliableAmount }}UNMS</div>
                 <div class="bg-card-tip1-btn" @click="claimMint2">{{ $tc('home.DrawDown') }}</div>
             </div>
             <li class="bg-card-bold">
                   <div class="div left">
                     <div class="top1">{{ teamUsdt }} UNMS</div>
-                    <div class="top2">今日产出</div>
+                    <div class="top2">{{ $tc('home.OutputToday') }}</div>
                   </div>
                   <div class="div right">
                     <div class="top1">{{ generate.mintToken }} UNMS</div>
-                    <div class="top2">目前产出</div>
+                    <div class="top2">{{ $tc('home.CurrentOutput') }}</div>
                   </div>
               </li>
               <li class="bg-card-bold">
                   <div class="div left">
                     <div class="top1">{{ userinfo.claimedInviteBonusAmount && userinfo.claimedInviteBonusAmount }}UNMS</div>
-                    <div class="top2">已领取总和</div>
+                    <div class="top2">{{ $tc('home.SumReceived') }}</div>
                   </div>
                   <div class="div right">
                     <div class="top1">{{ userinfo.inviteBonusAmount && userinfo.inviteBonusAmount }} UNMS</div>
-                    <div class="top2">推荐奖励总和</div>
+                    <div class="top2">{{ $tc('home.SumRewards') }}</div>
                   </div>
               </li>
           </ul>
@@ -116,7 +116,7 @@
       // 100*86400
       data(){
           return {
-              
+            active:false
           }
       },
       methods:{
@@ -156,6 +156,10 @@
                 this.claimMintFn2()
             }
         },
+        //展开
+        More(){
+          this.active = !this.active
+        }
       },
       computed:{
         ...mapState({
@@ -244,9 +248,17 @@
                 font-weight: 500;
                 color: rgba(256,256,256,0.6);
               }
+              &-card2{
+                transition: height .3s ease-in;
+                overflow: hidden;
+                z-index: 1;
+              }
+              &-card3{
+                // min-height: pxttrem(688) !important;
+              }
               &-card{
                 width: pxttrem(670);
-                min-height: pxttrem(388);
+                height: pxttrem(388);
                 background: #322267;
                 border-radius: pxttrem(16);
                 margin: pxttrem(40) auto 0;

@@ -4,9 +4,14 @@
       <div class="bg">
           <ul class="bg-card" v-if="userinfo.invited && userinfo.invited.length > 0">
               <li class="bg-card-li" v-for="(item,index) in userinfo.invited" :key="index">
-                  <div class="left">{{ '会员'+getNum(getsingleInfo(item)) }}</div>
+                  <div class="left">{{ $tc('home.member')+getNum(getsingleInfo(item)) }}</div>
                   <div class="right">{{ item.replace(/(.{6}).*(.{8})/, '$1...$2') }}</div>
               </li>
+          </ul>
+          <ul class="bg-card" v-else>
+            <div class="center">
+                {{ $tc('home.noData') }}
+            </div>
           </ul>
       </div>
     </div>
@@ -82,12 +87,25 @@
                 font-weight: 500;
                 color: rgba(256,256,256,0.6);
               }
+              .center{
+                    text-align: center;
+                    font-size: pxttrem(32);
+                    font-family: PingFangSC-Medium, PingFang SC;
+                    font-weight: 500;
+                    color: #FFFFFF;
+                    border-left: pxttrem(2) solid rgba(256,256,256,0.12);
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
+                }
               &-card{
                 width: pxttrem(670);
                 min-height: pxttrem(388);
                 background: #322267;
                 border-radius: pxttrem(16);
                 margin: pxttrem(40) auto 0;
+                position: relative;
                 .click_more{
                     color: #FFFFFF;
                     text-align: center;

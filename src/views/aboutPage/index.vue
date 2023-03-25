@@ -4,8 +4,8 @@
       <div class="bg">
           <div class="bg-card">
               <img src="../../assets/images/gongao.png" class="bg-card-tip" alt="">
-              <div class="title">公告</div>
-              <div class="content2">2023/08/09 11:36</div>
+              <div class="title">关于我们</div>
+              <!-- <div class="content2">2023/08/09 11:36</div> -->
               <div class="content3">
                   UNMS是一款以邀请伙伴赚钱分佣而赚取平台币为背景的， 它应用了当前最流行的。
                   投资邀约赚佣概念，完美地融合了产量耕作，让玩家在玩的同时获得娱乐。
